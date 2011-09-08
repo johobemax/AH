@@ -7,29 +7,55 @@ import android.graphics.Path;
 import android.graphics.PointF;
 
 class Pad {
-	int x, y, dx, dy, r, id;
+	int x, y, dx, dy, r, id, mx, my;
 	private Paint paint;
-	boolean onField;
+	private boolean onField;
 	private Path path;
 	int score, sx, sy, sd;
+	Player p;
 
-	Pad(int x, int y, int dx, int dy, int r, int c){
-		this.x = x;
-		this.y = y;
-		this.dx = dx;
-		this.dy = dy;
+	public synchronized void setOnField(boolean b){
+		onField = b;
+	}
+
+	public boolean getOnField(){
+		return onField;
+	}
+
+	public synchronized void setMx(int mx){
+		this.mx = mx;
+	}
+
+	public synchronized void setMy(int my){
+		this.my = my;
+	}
+
+	Pad(int x, int y, int r, Player p){
+		this.x = this.mx = x;
+		this.y = this.my = y;
+		this.dx = 0;
+		this.dy = 0;
 		this.r = r;
+		this.p = p;
 		paint = new Paint();
-		paint.setColor(c);
+		if(p == Player.RED){
+			paint.setColor(Color.RED);
+		}else{
+			paint.setColor(Color.BLUE);
+		}
 		onField = false;
 		id = -1;
 		path = new Path();
 		score = 0;
 	}
 
-	void move(int mx, int my){
+	synchronized void move(Field f){
 		dx = mx - x;
-		dy = my - y;
+		if(p == Player.RED){
+			dy = (my + r) - y;
+		}else if(p==Player.BLUE){
+			dy = (my - r) - y;
+		}
 		double len = Math.sqrt(dx*dx+dy*dy);
 		if(len > r){
 			this.dx = (int)(dx * r / len);
@@ -37,6 +63,21 @@ class Pad {
 		}
 		x += dx;
 		y += dy;
+
+		if(p == Player.RED){
+			if(y <= f.redLine && !onField){
+				onField = true;
+			}else if(y > f.redLine && onField){
+				onField = false;
+			}
+		}
+		if(p==Player.BLUE){
+			if(y >= f.blueLine && !onField){
+				onField = true;
+			}else if(y < f.blueLine && onField){
+				onField = false;
+			}
+		}
 	}
 
 	void draw(Canvas c){

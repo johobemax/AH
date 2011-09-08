@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.SurfaceView;
 
+enum Player{RED,BLUE};
+
 public class AirHockey extends Activity {
 	private SurfaceView surfaceView;
 
@@ -12,8 +14,7 @@ public class AirHockey extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        SurfaceView sview = (SurfaceView)findViewById(R.id.field);
-        Field field = new Field(sview);
+        surfaceView = (SurfaceView)findViewById(R.id.field);
         //Field field = new Field(surfaceView, this);
     }
 
@@ -27,6 +28,7 @@ public class AirHockey extends Activity {
 	protected void onStart() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onStart();
+		Field field  = new Field(surfaceView);
 	}
 
 	@Override

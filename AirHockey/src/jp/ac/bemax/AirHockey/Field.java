@@ -16,7 +16,7 @@ import android.view.View.OnTouchListener;
 class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 	private SurfaceHolder holder;
 	private Thread looper;
-	int width, height, aLine, bLine;
+	int width, height, redLine, blueLine;
 	private Pad pad1, pad2;
 	private Point point1,point2,point3,point4;
 	private Pack pack;
@@ -38,9 +38,9 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		paint.setColor(Color.GRAY);
 		canvas.drawRect(0, 0, width, height, paint);
 		paint.setColor(Color.argb(50, 255, 100, 100));
-		canvas.drawRect(0,0,width,aLine,paint);
+		canvas.drawRect(0,0,width,redLine,paint);
 		paint.setColor(Color.argb(50,100,100,255));
-		canvas.drawRect(0,bLine,width,height,paint);
+		canvas.drawRect(0,blueLine,width,height,paint);
 		paint.setColor(Color.rgb(100, 100, 100));
 		canvas.drawRect(goal1, paint);
 		canvas.drawRect(goal2, paint);
@@ -58,10 +58,10 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		if(this.holder == holder){
 			this.width = width;
 			this.height = height;
-			aLine = (int)(height * 0.4);
-			bLine = (int)(height * 0.6);
-			pad1 = new Pad(100,100,0,0,width/10,Color.RED);
-			pad2 = new Pad(100,700,0,0,width/10,Color.BLUE);
+			redLine = (int)(height * 0.4);
+			blueLine = (int)(height * 0.6);
+			pad1 = new Pad(100,100,width/10,Player.RED);
+			pad2 = new Pad(100,700,width/10,Player.BLUE);
 			pack = new Pack((int)(width/20),height/2,3,3,(int)(width/20));
 			goal1 = new Rect((int)(width*0.3),0,(int)(width*0.7),(int)(height*0.03));
 			goal2 = new Rect((int)(width*0.3),(int)(height*0.97),(int)(width*0.7),height);
@@ -90,16 +90,18 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		long st,et;
 		while(loop){
 			st = System.currentTimeMillis();
-			pack.move(this);
 			pack.hit(pad1);
 			pack.hit(pad2);
 			pack.hit(point1);
 			pack.hit(point2);
 			pack.hit(point3);
 			pack.hit(point4);
+			pack.move(this);
+			pad1.move(this);
+			pad2.move(this);
 			paint();
 			et = System.currentTimeMillis() - st;
-Log.d("FPS",""+et);
+//Log.d("FPS",""+et);
 			if(et < 30){
 				try{
 					Thread.sleep(30-et);
@@ -107,49 +109,52 @@ Log.d("FPS",""+et);
 			}
 		}
 		if(pad1.score == 7){
-			paint();
+			//paint();
 		}else{
-			paint();
+			//paint();
 		}
 	}
 
 	public boolean onTouch(View view, MotionEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 			int index = e.getActionIndex();
+
 			switch(e.getActionMasked()){
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_POINTER_DOWN:
-				if(e.getY(index) < aLine && pad1.id < 0){
-					pad1.id = e.getPointerId(e.getActionIndex());
-					pad1.onField = true;
-					pad1.x = (int)e.getX(index);
-					pad1.y = (int)e.getY(index) + pad1.r;
-				}
-				if(e.getY(index) > bLine && pad2.id < 0){
-					pad2.id = e.getPointerId(e.getActionIndex());
-					pad2.onField = true;
-					pad2.x = (int)e.getX(index);
-					pad2.y = (int)e.getY(index) - pad2.r;
+				if(e.getY(index) < redLine){
+					if( pad1.id < 0){
+						pad1.id = e.getPointerId(e.getActionIndex());
+						pad1.x = (int)e.getX(index);
+						pad1.y = (int)e.getY(index);
+						pad1.setMy((int)e.getX(index));
+						pad1.setMy((int)e.getY(index));
+						pad1.setOnField(true);
+						//pad1.move(this);
+					}
+				}else if(e.getY(index) > blueLine){
+					if( pad2.id < 0){
+						pad2.id = e.getPointerId(e.getActionIndex());
+						pad2.x = (int)e.getX(index);
+						pad2.y = (int)e.getY(index);
+						pad2.setMx((int)e.getX(index));
+						pad2.setMy((int)e.getY(index));
+						pad1.setOnField(true);
+						//pad2.move(this);
+					}
 				}
 				break;
 			case MotionEvent.ACTION_MOVE:
 				for(int i=0; i<e.getPointerCount(); i++){
 					int pid = e.getPointerId(i);
 					if(pid == pad1.id){
-						pad1.move((int)e.getX(i), (int)e.getY(i)+pad1.r);
-						if(pad1.y < aLine){
-							pad1.onField = true;
-						}else{
-							pad1.onField = false;
-						}
-					}
-					if(pid == pad2.id){
-						pad2.move((int)e.getX(i), (int)e.getY(i) - pad2.r);
-						if(pad2.y > bLine){
-							pad2.onField = true;
-						}else{
-							pad2.onField = false;
-						}
+						pad1.setMx((int)e.getX(i));
+						pad1.setMy((int)e.getY(i));
+						//pad1.move(this);
+					}else if(pid == pad2.id){
+						pad2.setMx((int)e.getX(i));
+						pad2.setMy((int)e.getY(i));
+						//pad2.move(this);
 					}
 				}
 				break;
@@ -157,13 +162,15 @@ Log.d("FPS",""+et);
 			case MotionEvent.ACTION_POINTER_UP:
 				if(pad1.id == e.getPointerId(index)){
 					pad1.id = -1;
-					pad1.onField = false;
+					pad1.setOnField(false);
 				}
 				if(pad2.id == e.getPointerId(index)){
 					pad2.id = -1;
-					pad2.onField = false;
+					pad2.setOnField(false);
 				}
 			}
+Log.d("Pad1my",""+pad1.my);
+Log.d("Pad2my",""+pad2.my);
 		return true;
 	}
 

@@ -62,7 +62,7 @@ class Pack {
 	}
 
 	void hit(Pad p){
-		if(!p.onField) return;
+		if(!p.getOnField()) return;
 		int xx = p.x - x;
 		int yy = p.y - y;
 		double len = Math.sqrt(xx*xx+yy*yy);

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 class Pack {
 	int x, y, dx, dy, r;
 	private Paint paint;
+	private boolean hiting;
 
 	Pack(int x, int y, int dx, int dy, int r){
 		this.x = x;
@@ -16,6 +17,7 @@ class Pack {
 		this.r = r;
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
+		hiting = false;
 	}
 
 	void move(Field f){
@@ -40,10 +42,18 @@ class Pack {
 		}
 
 		if(y < -r || y > f.height + r){
-			x = r;
+			if(y < -r){
+				x = f.width - r;
+				dx = -3;
+				dy = -3;
+				f.goal(1);
+			}else{
+				x = r;
+				dx = 3;
+				dy = 3;
+				f.goal(2);
+			}
 			y = f.height/2;
-			dx = 3;
-			dy = 3;
 		}
 	}
 
@@ -72,6 +82,12 @@ class Pack {
 
 			dx = (int)(ddx*Math.cos(deg)-ddy*Math.sin(deg));
 			dy = (int)(ddx*Math.sin(deg)+ddy*Math.cos(deg));
+
+			len = Math.sqrt(dx*dx+dy*dy);
+			if(len > r*2){
+				dx = (int)(dx * r*2 / len);
+				dy = (int)(dy * r*2 / len);
+			}
 		}
 	}
 
@@ -80,7 +96,16 @@ class Pack {
 		int yy = p.y - y;
 		double len = Math.sqrt(xx*xx+yy*yy);
 
-		if(len <= p.r + r){
+		if(hiting){
+			if(len <= p.r + r){
+
+			}else{
+				hiting = false;
+			}
+		}else if(len <= p.r + r){
+			if(hiting){
+
+			}
 			double deg = Math.acos(xx/len);
 			if(Math.asin(yy/len)<0){
 				deg = -deg;

@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.SurfaceView;
 
 enum Player{RED,BLUE};
+enum Level{EASY,NORMAL,HARD};
 
 public class AirHockey extends Activity {
 	private SurfaceView surfaceView;
+	private Field field;
 
     /** Called when the activity is first created. */
     @Override
@@ -28,12 +30,13 @@ public class AirHockey extends Activity {
 	protected void onStart() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onStart();
-		Field field  = new Field(surfaceView);
+		field  = new Field(surfaceView);
 	}
 
 	@Override
 	protected void onStop() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onStop();
+//		field = null;
 	}
 }

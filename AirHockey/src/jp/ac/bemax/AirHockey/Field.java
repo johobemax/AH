@@ -60,8 +60,8 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 			this.height = height;
 			redLine = (int)(height * 0.4);
 			blueLine = (int)(height * 0.6);
-			pad1 = new Pad(100,100,width/10,Player.RED);
-			pad2 = new Pad(100,700,width/10,Player.BLUE);
+			pad1 = new Pad(this,100,100,Player.RED,Level.EASY);
+			pad2 = new Pad(this,100,700,Player.BLUE,Level.HARD);
 			pack = new Pack((int)(width/20),height/2,3,3,(int)(width/20));
 			goal1 = new Rect((int)(width*0.3),0,(int)(width*0.7),(int)(height*0.03));
 			goal2 = new Rect((int)(width*0.3),(int)(height*0.97),(int)(width*0.7),height);
@@ -117,60 +117,50 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 
 	public boolean onTouch(View view, MotionEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-			int index = e.getActionIndex();
-
-			switch(e.getActionMasked()){
-			case MotionEvent.ACTION_DOWN:
-			case MotionEvent.ACTION_POINTER_DOWN:
-				if(e.getY(index) < redLine){
-					if( pad1.id < 0){
-						pad1.id = e.getPointerId(e.getActionIndex());
-						pad1.x = (int)e.getX(index);
-						pad1.y = (int)e.getY(index);
-						pad1.setMy((int)e.getX(index));
-						pad1.setMy((int)e.getY(index));
-						pad1.setOnField(true);
-						//pad1.move(this);
-					}
-				}else if(e.getY(index) > blueLine){
-					if( pad2.id < 0){
-						pad2.id = e.getPointerId(e.getActionIndex());
-						pad2.x = (int)e.getX(index);
-						pad2.y = (int)e.getY(index);
-						pad2.setMx((int)e.getX(index));
-						pad2.setMy((int)e.getY(index));
-						pad1.setOnField(true);
-						//pad2.move(this);
-					}
+		int index;
+		float x,y;
+		switch(e.getActionMasked()){
+		case MotionEvent.ACTION_DOWN:
+		case MotionEvent.ACTION_POINTER_DOWN:
+			index = e.getActionIndex();
+			x = e.getX(index);
+			y = e.getY(index);
+			if(e.getY(index) < redLine){
+				if( pad1.attachId(e.getPointerId(index) )){
+					pad1.setTouchPoint(x, y, true);
+					pad1.setOnField(true);
 				}
-				break;
-			case MotionEvent.ACTION_MOVE:
-				for(int i=0; i<e.getPointerCount(); i++){
-					int pid = e.getPointerId(i);
-					if(pid == pad1.id){
-						pad1.setMx((int)e.getX(i));
-						pad1.setMy((int)e.getY(i));
-						//pad1.move(this);
-					}else if(pid == pad2.id){
-						pad2.setMx((int)e.getX(i));
-						pad2.setMy((int)e.getY(i));
-						//pad2.move(this);
-					}
+			}else if(e.getY(index) > blueLine){
+				if( pad2.attachId(e.getPointerId(index))){;
+					pad2.setTouchPoint(x, y, true);
+					pad2.setOnField(true);
 				}
-				break;
-			case MotionEvent.ACTION_UP:
+			}
+			break;
+		case MotionEvent.ACTION_MOVE:
+			for(index=0; index<e.getPointerCount(); index++){
+				x = e.getX(index);
+				y = e.getY(index);
+				int pid = e.getPointerId(index);
+				if(pid == pad1.getId()){
+					pad1.setTouchPoint(x, y, false);
+				}else if(pid == pad2.getId()){
+					pad2.setTouchPoint(x, y, false);
+				}
+			}
+			break;
+		case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_POINTER_UP:
-				if(pad1.id == e.getPointerId(index)){
-					pad1.id = -1;
+				index = e.getActionIndex();
+				if(pad1.isId(e.getPointerId(index))){
+					pad1.removeId();
 					pad1.setOnField(false);
 				}
-				if(pad2.id == e.getPointerId(index)){
-					pad2.id = -1;
+				if(pad2.isId(e.getPointerId(index))){
+					pad2.removeId();
 					pad2.setOnField(false);
 				}
 			}
-Log.d("Pad1my",""+pad1.my);
-Log.d("Pad2my",""+pad2.my);
 		return true;
 	}
 

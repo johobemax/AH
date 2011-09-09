@@ -62,12 +62,12 @@ class Pack {
 	}
 
 	void hit(Pad p){
-		if(!p.getOnField()) return;
-		int xx = p.x - x;
-		int yy = p.y - y;
+		if(!p.drawable()) return;
+		int xx = p.getX() - x;
+		int yy = p.getY() - y;
 		double len = Math.sqrt(xx*xx+yy*yy);
 
-		if(len <= p.r + r){
+		if(len <= p.getR() + r){
 			double deg = Math.acos(xx/len);
 			if(Math.asin(yy/len)<0){
 				deg = -deg;
@@ -78,7 +78,7 @@ class Pack {
 				ddx = -ddx * 0.8;
 			}
 			double ddy = dx*Math.sin(-deg) + dy*Math.cos(-deg);
-			ddx += p.dx*Math.cos(-deg) - p.dy*Math.sin(-deg);
+			ddx += p.getDx()*Math.cos(-deg) - p.getDy()*Math.sin(-deg);
 
 			dx = (int)(ddx*Math.cos(deg)-ddy*Math.sin(deg));
 			dy = (int)(ddx*Math.sin(deg)+ddy*Math.cos(deg));
@@ -92,17 +92,17 @@ class Pack {
 	}
 
 	void hit(Point p){
-		int xx = p.x - x;
-		int yy = p.y - y;
+		int xx = p.getX() - x;
+		int yy = p.getY() - y;
 		double len = Math.sqrt(xx*xx+yy*yy);
 
 		if(hiting){
-			if(len <= p.r + r){
+			if(len <= p.getR() + r){
 
 			}else{
 				hiting = false;
 			}
-		}else if(len <= p.r + r){
+		}else if(len <= p.getR() + r){
 			if(hiting){
 
 			}

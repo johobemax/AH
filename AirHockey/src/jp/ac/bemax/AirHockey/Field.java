@@ -24,6 +24,7 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 	private Paint paint;
 	private Rect goal1, goal2;
 	private Path path;
+	private Team red, blue;
 
 	public Field(SurfaceView sview){
 		holder = sview.getHolder();
@@ -44,8 +45,8 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		paint.setColor(Color.rgb(100, 100, 100));
 		canvas.drawRect(goal1, paint);
 		canvas.drawRect(goal2, paint);
-		drawStar(canvas,pad1.score,true);
-		drawStar(canvas,pad2.score,false);
+		drawStar(canvas,red.getScore(),true);
+		drawStar(canvas,blue.getScore(),false);
 
 		pad1.draw(canvas);
 		pad2.draw(canvas);
@@ -60,6 +61,8 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 			this.height = height;
 			redLine = (int)(height * 0.4);
 			blueLine = (int)(height * 0.6);
+			red = new Team(Player.RED,1,this);
+			blue = new Team(Player.BLUE,1,this);
 			pad1 = new Pad(this,100,100,Player.RED,Level.EASY);
 			pad2 = new Pad(this,100,700,Player.BLUE,Level.HARD);
 			pack = new Pack((int)(width/20),height/2,3,3,(int)(width/20));
@@ -108,7 +111,7 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 				}catch(Exception e){}
 			}
 		}
-		if(pad1.score == 7){
+		if(red.getScore() == 7){
 			//paint();
 		}else{
 			//paint();
@@ -142,9 +145,9 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 				x = e.getX(index);
 				y = e.getY(index);
 				int pid = e.getPointerId(index);
-				if(pid == pad1.getId()){
+				if(pad1.isId(pid)){
 					pad1.setTouchPoint(x, y, false);
-				}else if(pid == pad2.getId()){
+				}else if(pad2.isId(pid)){
 					pad2.setTouchPoint(x, y, false);
 				}
 			}
@@ -169,10 +172,10 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		Path path = new Path();
 		if(c==1){
 			pad2.addScore(1);
-			if(pad2.score == 7) loop = false;
+			if(blue.getScore() == 7) loop = false;
 		}else{
 			pad1.addScore(1);
-			if(pad1.score == 7) loop = false;
+			if(red.getScore() == 7) loop = false;
 		}
 	}
 

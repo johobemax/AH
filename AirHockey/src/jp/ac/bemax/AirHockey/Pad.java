@@ -11,28 +11,18 @@ class Pad {
 	private Paint paint;
 	private boolean onField, inField;
 	private Path path;
-	int score, sx, sy, sd;
+	private int score, sx, sy, sd;
 	Player player;
 
 	/******* Setter *******/
-	protected void setX(int x) {this.x = x;}
-	protected void setY(int y){this.y = y;}
-	protected void setId(int id){this.id = id;}
 	public synchronized void setOnField(boolean b){	onField = b;}
-	public synchronized void setMx(int mx){this.mx = mx;}
-	public synchronized void setMy(int my){this.my = my;}
 
 	/******* Getter *******/
-	protected int getX() {return x;}
-	protected int getY() {return y;}
-	protected int getR(){return r;}
-	protected int getId(){return id;}
+	public int getX() {return x;}
+	public int getY() {return y;}
+	public int getR(){return r;}
 	public int getDx(){return dx;}
 	public int getDy(){return dy;}
-	public synchronized boolean getInField(){return inField;	}
-	public boolean getOnField(){return onField;}
-	public synchronized int getMx(){return mx;}
-	public synchronized int getMy(){return my;}
 
 	/** コンストラクタ */
 	Pad(Field f, int x, int y, Player p, Level l){
@@ -120,7 +110,7 @@ class Pad {
 	 */
 	synchronized void move(Field f){
 		dx = mx - x;
-		if(player == Player.RED){
+		if(player.compareTo(Player.RED)==0){
 			dy = my - y;
 		}else{
 			dy = my - y;
@@ -148,12 +138,20 @@ class Pad {
 		}
 	}
 
+	/**
+	 * キャンバスにPadを描く
+	 * @param c キャンバス
+	 */
 	void draw(Canvas c){
 		if(drawable()){
 			c.drawCircle(x, y, r, paint);
 		}
 	}
 
+	/**
+	 * 得点を加算する
+	 * @param p 得点
+	 */
 	void addScore(int p){
 		score += p;
 	}

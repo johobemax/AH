@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, AirHockey!</string>
+    <string name="title">Air Hockey</string>
     <string name="app_name">AirHockey</string>
+    <string name="nomal">nomal</string>
 </resources>

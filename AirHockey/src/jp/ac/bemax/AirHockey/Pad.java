@@ -30,7 +30,7 @@ class Pad {
 		this.y = this.my = y;
 		this.dx = 0;
 		this.dy = 0;
-		this.r = f.width / 10;
+		this.r = f.width / 12;
 		this.yGap = f.height / 100;
 		this.player = p;
 		paint = new Paint();
@@ -41,9 +41,9 @@ class Pad {
 			yGap = -yGap;
 		}
 		if(l  == Level.HARD){
-			this.r = (int)(r * 0.75);
+			this.r = (int)(r * 0.8);
 		}else if(l==Level.EASY){
-			this.r = (int)(r*1.5);
+			this.r = (int)(r*1.25);
 		}
 		onField = false;
 		inField = false;

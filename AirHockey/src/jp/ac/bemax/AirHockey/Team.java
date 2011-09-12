@@ -1,9 +1,12 @@
 package jp.ac.bemax.AirHockey;
 
+import android.graphics.Canvas;
+
 public class Team {
 	private String name;
 	private Pad[] players;
 	private int score, hashcode, count;
+	private Field field;
 
 	public Team(Player p, int playnum, Field f){
 		name = p.name();
@@ -14,6 +17,7 @@ public class Team {
 		}
 		score = 0;
 		count = 0;
+		field = f;
 	}
 
 	public int getScore(){
@@ -28,7 +32,6 @@ public class Team {
 		score = 0;
 	}
 
-
 	public boolean setPad(Pad p){
 		boolean result = false;
 		if(count < players.length){
@@ -37,5 +40,49 @@ public class Team {
 			result = true;
 		}
 		return result;
+	}
+
+	public Pad getPad(int index){
+		return players[index];
+	}
+
+	public void move(){
+		for(Pad p:players){
+			p.move(field);
+		}
+	}
+
+	public void draw(Canvas c){
+		for(Pad p: players){
+			p.draw(c);
+		}
+	}
+
+	public Pad attachId(int id){
+		Pad result = null;
+		for(Pad p: players){
+			if(p.attachId(id)){
+				result = p;
+				break;
+			}
+		}
+		return result;
+	}
+
+	public Pad searchPad(int id){
+		Pad result = null;
+		for(Pad p: players){
+			if(p.isId(id)){
+				result = p;
+				break;
+			}
+		}
+		return result;
+	}
+
+	public void hit(Pack pack){
+		for(Pad p:players){
+			pack.hit(p);
+		}
 	}
 }

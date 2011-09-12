@@ -32,11 +32,11 @@ class Pack {
 			x = f.width - r;
 			dx = -(int)(dx*0.8);
 		}
-		if(y < r && (x < f.width*0.3 || x > f.width*0.7)){
+		if(y < r && (x < f.gleft || x > f.gright)){
 			y = r;
 			dy = -(int)(dy*0.8);
 		}
-		if(y > f.height - r && (x < f.width*0.3 || x > f.width*0.7)){
+		if(y > f.height - r && (x < f.gleft || x > f.gright)){
 			y = f.height - r;
 			dy = -(int)(dy*0.8);
 		}

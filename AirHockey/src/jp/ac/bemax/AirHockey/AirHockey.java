@@ -27,7 +27,7 @@ public class AirHockey extends Activity {
 	protected void onStart() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onStart();
-		field  = new Field(surfaceView);
+		field  = new Field(surfaceView, Mode.Double);
 	}
 
 	@Override

@@ -16,8 +16,7 @@ import android.view.View.OnTouchListener;
 class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 	private SurfaceHolder holder;
 	private Thread looper;
-	int width, height, redLine, blueLine;
-	private Pad pad1, pad2;
+	int width, height, redLine, blueLine, gleft, gright;
 	private Point point1,point2,point3,point4;
 	private Pack pack;
 	private boolean loop;
@@ -25,10 +24,12 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 	private Rect goal1, goal2;
 	private Path path;
 	private Team red, blue;
+	private Mode mode;
 
-	public Field(SurfaceView sview){
+	public Field(SurfaceView sview, Mode m){
 		holder = sview.getHolder();
 		holder.addCallback(this);
+		mode = m;
 		paint = new Paint();
 		sview.setOnTouchListener(this);
 		path = new Path();
@@ -48,37 +49,44 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		drawStar(canvas,red.getScore(),true);
 		drawStar(canvas,blue.getScore(),false);
 
-		pad1.draw(canvas);
-		pad2.draw(canvas);
+		red.draw(canvas);
+		blue.draw(canvas);
 		pack.draw(canvas);
 		holder.unlockCanvasAndPost(canvas);
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,	 int height) {
-		// TODO 自動生成されたメソッド・スタブ
 		if(this.holder == holder){
 			this.width = width;
 			this.height = height;
 			redLine = (int)(height * 0.4);
 			blueLine = (int)(height * 0.6);
-			red = new Team(Player.RED,1,this);
-			blue = new Team(Player.BLUE,1,this);
-			pad1 = new Pad(this,100,100,Player.RED,Level.NORMAL);
-			pad2 = new Pad(this,100,700,Player.BLUE,Level.NORMAL);
+			red = new Team(Player.RED,2,this);
+			blue = new Team(Player.BLUE,2,this);
+			if(mode.compareTo(Mode.Double)==0){
+				gleft = (int)(width*0.22);
+				gright = (int)(width*0.78);
+			}else{
+				gleft = (int)(width*0.3);
+				gright = (int)(width*0.7);
+			}
+			red.setPad(new Pad(this,100,100,Player.RED,Level.NORMAL));
+			red.setPad(new Pad(this,100,100,Player.RED,Level.NORMAL));
+			blue.setPad(new Pad(this,100,700,Player.BLUE,Level.EASY));
+			blue.setPad(new Pad(this,100,700,Player.BLUE,Level.EASY));
 			pack = new Pack((int)(width/20),height/2,3,3,(int)(width/20));
-			goal1 = new Rect((int)(width*0.3),0,(int)(width*0.7),(int)(height*0.03));
-			goal2 = new Rect((int)(width*0.3),(int)(height*0.97),(int)(width*0.7),height);
-			point1 = new Point((int)(width*0.3),0,0,Color.argb(0,0,0,0));
-			point2 = new Point((int)(width*0.7),0,0,Color.argb(0,0,0,0));
-			point3 = new Point((int)(width*0.3),height-1,0,Color.argb(0,0,0,0));
-			point4 = new Point((int)(width*0.7),height-1,0,Color.argb(0,0,0,0));
+			goal1 = new Rect(gleft,0,gright,(int)(height*0.03));
+			goal2 = new Rect(gleft,(int)(height*0.97),gright,height);
+			point1 = new Point(gleft,0,0,Color.argb(0,0,0,0));
+			point2 = new Point(gright,0,0,Color.argb(0,0,0,0));
+			point3 = new Point(gleft,height-1,0,Color.argb(0,0,0,0));
+			point4 = new Point(gright,height-1,0,Color.argb(0,0,0,0));
 			loop = true;
 			looper.start();
 		}
 	}
 
 	public void surfaceCreated(SurfaceHolder holder) {
-		// TODO 自動生成されたメソッド・スタブ
 		looper = new Thread(this);
 	}
 
@@ -93,15 +101,15 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		long st,et;
 		while(loop){
 			st = System.currentTimeMillis();
-			pack.hit(pad1);
-			pack.hit(pad2);
+			red.hit(pack);
+			blue.hit(pack);
 			pack.hit(point1);
 			pack.hit(point2);
 			pack.hit(point3);
 			pack.hit(point4);
 			pack.move(this);
-			pad1.move(this);
-			pad2.move(this);
+			red.move();
+			blue.move();
 			paint();
 			et = System.currentTimeMillis() - st;
 //Log.d("FPS",""+et);
@@ -120,23 +128,25 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 
 	public boolean onTouch(View view, MotionEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		int index;
+		int index, id;
 		float x,y;
+		Pad p = null;
 		switch(e.getActionMasked()){
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_POINTER_DOWN:
 			index = e.getActionIndex();
+			id = e.getPointerId(index);
 			x = e.getX(index);
 			y = e.getY(index);
 			if(e.getY(index) < redLine){
-				if( pad1.attachId(e.getPointerId(index) )){
-					pad1.setTouchPoint(x, y, true);
-					pad1.setOnField(true);
+				if((p = red.attachId(id))!=null){
+					p.setTouchPoint(x, y, true);
+					p.setOnField(true);
 				}
 			}else if(e.getY(index) > blueLine){
-				if( pad2.attachId(e.getPointerId(index))){;
-					pad2.setTouchPoint(x, y, true);
-					pad2.setOnField(true);
+				if((p = blue.attachId(id))!=null){;
+					p.setTouchPoint(x, y, true);
+					p.setOnField(true);
 				}
 			}
 			break;
@@ -144,24 +154,25 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 			for(index=0; index<e.getPointerCount(); index++){
 				x = e.getX(index);
 				y = e.getY(index);
-				int pid = e.getPointerId(index);
-				if(pad1.isId(pid)){
-					pad1.setTouchPoint(x, y, false);
-				}else if(pad2.isId(pid)){
-					pad2.setTouchPoint(x, y, false);
+				id = e.getPointerId(index);
+				if((p = red.searchPad(id))!=null){
+					p.setTouchPoint(x, y, false);
+				}else if((p = blue.searchPad(id))!=null){
+					p.setTouchPoint(x, y, false);
 				}
 			}
 			break;
 		case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_POINTER_UP:
 				index = e.getActionIndex();
-				if(pad1.isId(e.getPointerId(index))){
-					pad1.removeId();
-					pad1.setOnField(false);
+				id = e.getPointerId(index);
+				if((p=red.searchPad(id))!=null){
+					p.removeId();
+					p.setOnField(false);
 				}
-				if(pad2.isId(e.getPointerId(index))){
-					pad2.removeId();
-					pad2.setOnField(false);
+				if((p=blue.searchPad(id))!=null){
+					p.removeId();
+					p.setOnField(false);
 				}
 			}
 		return true;
@@ -171,10 +182,10 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		Paint paint = new Paint();
 		Path path = new Path();
 		if(c==1){
-			pad2.addScore(1);
+			blue.addScore(1);
 			if(blue.getScore() == 7) loop = false;
 		}else{
-			pad1.addScore(1);
+			red.addScore(1);
 			if(red.getScore() == 7) loop = false;
 		}
 	}

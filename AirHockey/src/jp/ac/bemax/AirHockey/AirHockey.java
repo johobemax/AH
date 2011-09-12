@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.SurfaceView;
 
-enum Player{RED,BLUE};
-enum Level{EASY,NORMAL,HARD};
-
 public class AirHockey extends Activity {
 	private SurfaceView surfaceView;
 	private Field field;

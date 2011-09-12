@@ -19,7 +19,11 @@ public class Team {
 		return score;
 	}
 
-	public void setScore(int s){
-		score = s;
+	public void addScore(int s){
+		score += s;
+	}
+
+	public void initScore(){
+		score = 0;
 	}
 }

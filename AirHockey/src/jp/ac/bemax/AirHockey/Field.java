@@ -63,8 +63,8 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 			blueLine = (int)(height * 0.6);
 			red = new Team(Player.RED,1,this);
 			blue = new Team(Player.BLUE,1,this);
-			pad1 = new Pad(this,100,100,Player.RED,Level.EASY);
-			pad2 = new Pad(this,100,700,Player.BLUE,Level.HARD);
+			pad1 = new Pad(this,100,100,Player.RED,Level.NORMAL);
+			pad2 = new Pad(this,100,700,Player.BLUE,Level.NORMAL);
 			pack = new Pack((int)(width/20),height/2,3,3,(int)(width/20));
 			goal1 = new Rect((int)(width*0.3),0,(int)(width*0.7),(int)(height*0.03));
 			goal2 = new Rect((int)(width*0.3),(int)(height*0.97),(int)(width*0.7),height);

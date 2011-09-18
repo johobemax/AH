@@ -72,8 +72,8 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 			}
 			red.setPad(new Pad(this,100,100,Player.RED,Level.NORMAL));
 			red.setPad(new Pad(this,100,100,Player.RED,Level.NORMAL));
-			blue.setPad(new Pad(this,100,700,Player.BLUE,Level.EASY));
-			blue.setPad(new Pad(this,100,700,Player.BLUE,Level.EASY));
+			blue.setPad(new Pad(this,100,700,Player.BLUE,Level.NORMAL));
+			blue.setPad(new Pad(this,100,700,Player.BLUE,Level.NORMAL));
 			pack = new Pack((int)(width/20),height/2,3,3,(int)(width/20));
 			goal1 = new Rect(gleft,0,gright,(int)(height*0.03));
 			goal2 = new Rect(gleft,(int)(height*0.97),gright,height);

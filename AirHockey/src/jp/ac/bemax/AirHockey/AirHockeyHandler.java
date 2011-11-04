@@ -11,10 +11,6 @@ public class AirHockeyHandler extends Handler {
 		this.act = act;
 	}
 	
-	public AirHockey getAct(){
-		return act;
-	}
-	
 	@Override
 	public void handleMessage(Message msg) {
 		// メッセージを受けて、画面を切り替える

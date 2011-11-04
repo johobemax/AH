@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="480dp"
-    android:layout_height="800dp"
-    android:layout_gravity="center"
-    android:orientation="vertical" >
+    android:layout_width="480px"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="20dp"
-        android:text="Air Hockey"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/title"
-        android:textSize="80sp" >
+        android:text="@string/app_name"
+        android:textSize="65sp" android:textColor="@color/title">
     </TextView>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/select_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="MENU"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="40sp" >
+        android:text="@string/mode_select"
+        android:textSize="40sp" android:padding="20px" android:textStyle="bold">
     </TextView>
+
+    <TextView
+        android:id="@+id/single_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/single"
+        android:textColor="@color/select_text"
+        android:textSize="45sp" android:textStyle="bold" android:layout_margin="10px"/>
+
+    <TextView
+        android:id="@+id/duale_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/duale"
+        android:textColor="@color/select_text"
+        android:textSize="45sp" android:textStyle="bold" android:layout_margin="10px"/>
 
 </LinearLayout>

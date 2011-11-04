@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, AirHockey!</string>
     <string name="app_name">AirHockey</string>
+    <string name="mode_select">mode select</string>
+    <string name="single">1 vs 1</string>
+    <string name="duale">2 vs 2</string>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="title_back">#fff</color>
     <color name="title">#bbf</color>
-    
+    <color name="select_text">#ff0</color>
 </resources>

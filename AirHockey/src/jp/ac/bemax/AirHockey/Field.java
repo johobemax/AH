@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.util.Log;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,6 +15,8 @@ import android.view.View.OnTouchListener;
 
 class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 	private SurfaceHolder holder;
+	private Handler handler;
+	
 	private Thread looper;
 	int width, height, redLine, blueLine, gleft, gright;
 	private Point point1,point2,point3,point4;
@@ -26,13 +28,23 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 	private Team red, blue;
 	private Mode mode;
 
-	public Field(SurfaceView sview, Mode m){
+	public Field(AirHockey act, Mode mode){
+		
+		SurfaceView sview = (SurfaceView)act.findViewById(R.id.field);
+		
+		handler = act.getHandler();
+		
 		holder = sview.getHolder();
+		
 		holder.addCallback(this);
-		mode = m;
+
 		paint = new Paint();
+
 		sview.setOnTouchListener(this);
+
 		path = new Path();
+		
+		this.mode = mode;
 	}
 
 	public void paint(){
@@ -61,9 +73,13 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 			this.height = height;
 			redLine = (int)(height * 0.4);
 			blueLine = (int)(height * 0.6);
-			red = new Team(Player.RED,2,this);
-			blue = new Team(Player.BLUE,2,this);
-			if(mode.compareTo(Mode.Double)==0){
+			int players = 1;
+			if(mode.equals(Mode.Duale)){
+				players = 2;
+			}
+			red = new Team(Player.RED , players, this);
+			blue = new Team(Player.BLUE , players, this);
+			if(mode.compareTo(Mode.Duale)==0){
 				gleft = (int)(width*0.22);
 				gright = (int)(width*0.78);
 			}else{
@@ -91,13 +107,11 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		// TODO 自動生成されたメソッド・スタブ
 		loop = false;
 		looper = null;
 	}
 
 	public void run() {
-		// TODO 自動生成されたメソッド・スタブ
 		long st,et;
 		while(loop){
 			st = System.currentTimeMillis();
@@ -112,7 +126,6 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 			blue.move();
 			paint();
 			et = System.currentTimeMillis() - st;
-//Log.d("FPS",""+et);
 			if(et < 30){
 				try{
 					Thread.sleep(30-et);
@@ -121,13 +134,13 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		}
 		if(red.getScore() == 7){
 			//paint();
+			handler.sendEmptyMessage(0);
 		}else{
-			//paint();
+			handler.sendEmptyMessage(0);
 		}
 	}
 
 	public boolean onTouch(View view, MotionEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
 		int index, id;
 		float x,y;
 		Pad p = null;

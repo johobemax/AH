@@ -7,6 +7,7 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -132,11 +133,16 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 				}catch(Exception e){}
 			}
 		}
+		
+		Message msg = new Message();
+		msg.what = 2;
+		
 		if(red.getScore() == 7){
-			//paint();
-			handler.sendEmptyMessage(2);
+			msg.arg1 = 0;
+			handler.sendMessage(msg);
 		}else{
-			handler.sendEmptyMessage(2);
+			msg.arg1 = 1;
+			handler.sendMessage(msg);
 		}
 	}
 

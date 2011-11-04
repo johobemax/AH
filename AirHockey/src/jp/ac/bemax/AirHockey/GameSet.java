@@ -1,5 +1,6 @@
 package jp.ac.bemax.AirHockey;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,13 +14,18 @@ public class GameSet implements OnTouchListener {
 		handler = act.getHandler();
 		
 		TextView text = (TextView)act.findViewById(R.id.winner_text);
+		text.setOnTouchListener(this);
 		
 		switch(winner){
 		case 0:
+			text.setTextColor(Color.RED);
 			text.setText(R.string.red_side);
+
 			break;
 		case 1:
+			text.setTextColor(Color.BLUE);
 			text.setText(R.string.blue_side);
+
 			break;
 		default:
 		}

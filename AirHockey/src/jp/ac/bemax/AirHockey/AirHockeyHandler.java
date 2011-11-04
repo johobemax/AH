@@ -2,6 +2,7 @@ package jp.ac.bemax.AirHockey;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.Layout;
 import android.widget.TextView;
 
 public class AirHockeyHandler extends Handler {

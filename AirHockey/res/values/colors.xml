@@ -3,4 +3,8 @@
     <color name="title_back">#fff</color>
     <color name="title">#bbf</color>
     <color name="select_text">#ff0</color>
+    <color name="blue_side">#00f</color>
+    <color name="red_side">#f00</color>
+    <color name="geme_set">#ff0</color>
+    <color name="win">#ff0</color>
 </resources>

@@ -15,6 +15,7 @@ public class AirHockey extends Activity {
         // Handler により、
         handler = new AirHockeyHandler(this);
         
+        handler.sendEmptyMessage(0);
     }
 
 	@Override

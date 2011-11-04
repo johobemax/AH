@@ -4,4 +4,8 @@
     <string name="mode_select">mode select</string>
     <string name="single">1 vs 1</string>
     <string name="duale">2 vs 2</string>
+    <string name="geme_set">Game Set</string>
+    <string name="red_side">Red Side</string>
+    <string name="blue_side">Blue Side</string>
+    <string name="win">Win.</string>
 </resources>

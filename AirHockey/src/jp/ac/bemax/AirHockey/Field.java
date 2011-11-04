@@ -134,9 +134,9 @@ class Field implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 		}
 		if(red.getScore() == 7){
 			//paint();
-			handler.sendEmptyMessage(0);
+			handler.sendEmptyMessage(2);
 		}else{
-			handler.sendEmptyMessage(0);
+			handler.sendEmptyMessage(2);
 		}
 	}
 

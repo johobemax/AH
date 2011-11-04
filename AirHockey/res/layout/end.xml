@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/end_layout"
+    android:layout_width="480px"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/game_set_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/geme_set"
+        android:textSize="40sp" android:layout_marginBottom="10px" android:layout_marginTop="10px" android:textColor="@color/geme_set"/>
+
+    <TextView
+        android:id="@+id/winner_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10px"
+        android:layout_marginTop="10px"
+        android:gravity="center"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/win_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10px"
+        android:layout_marginTop="10px"
+        android:gravity="center"
+        android:text="@string/win"
+        android:textColor="@color/win"
+        android:textSize="40sp" />
 
 </LinearLayout>

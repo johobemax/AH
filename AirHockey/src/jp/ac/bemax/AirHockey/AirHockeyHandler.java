@@ -39,6 +39,12 @@ public class AirHockeyHandler extends Handler {
 			Field field = new Field(act, (Mode)msg.obj);
 			
 			break;
+		case 2:
+			act.setContentView(R.layout.end);
+			
+			GameSet gameset = new GameSet(act, msg.arg1);
+			
+			break;
 		}
 		
 	}

@@ -1,5 +1,6 @@
-package jp.ac.bemax.AirHockey;
+package jp.pokkyunsoft.AirHockey;
 
+import jp.ac.bemax.AirHockey.R;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Layout;

@@ -5,7 +5,7 @@
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="9"/>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".AirHockey"
+        <activity android:name="jp.pokkyunsoft.AirHockey.AirHockey"
                   android:label="@string/app_name" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

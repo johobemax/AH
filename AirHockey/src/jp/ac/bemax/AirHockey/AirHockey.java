@@ -1,4 +1,4 @@
-package jp.pokkyunsoft.AirHockey;
+package jp.ac.bemax.AirHockey;
 
 import android.app.Activity;
 import android.os.Bundle;

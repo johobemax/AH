@@ -1,4 +1,4 @@
-package jp.pokkyunsoft.AirHockey;
+package jp.ac.bemax.AirHockey;
 
 import jp.ac.bemax.AirHockey.R;
 import android.graphics.Color;

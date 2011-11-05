@@ -1,4 +1,4 @@
-package jp.pokkyunsoft.AirHockey;
+package jp.ac.bemax.AirHockey;
 
 enum Mode {
 	Single,
